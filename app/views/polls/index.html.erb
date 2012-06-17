@@ -1,0 +1,9 @@
+<h2>Polls</h2>
+
+<% @polls.each do |poll| %>
+  <p>
+  <%= poll.question %>?
+  <%= link_to 'Yes', { :action => 'vote', :id => poll[:id], :answer => 'yes' }, :method => :post %> (<%= poll.yes %>) /
+  <%= link_to 'No', { :action => 'vote', :id => poll[:id], :answer => 'no' }, :method => :post %> (<%= poll.no %>)
+  </p>
+<% end %>
