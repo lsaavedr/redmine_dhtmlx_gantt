@@ -1,9 +1,8 @@
 class PollsController < ApplicationController
   unloadable
 
-
   def index
-    @polls = Pool.all
+    @polls = Poll.all
   end
 
   def vote
