@@ -5,4 +5,11 @@ Redmine::Plugin.register :git_lab_hooks do
   version '0.0.1'
   url 'https://github.com/lsaavedr/git_lab_hooks'
   author_url 'https://github.com/lsaavedr'
+
+  project_module :polls do
+    permission :view_polls, :polls => :index
+    permission :vote_polls, :polls => :vote
+  end
+
+  menu :project_menu, :polls, { :controller => 'polls', :action => 'index' }, :caption => 'Polls', :after => :activity, :param => :project_id
 end
