@@ -1,3 +1,7 @@
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'voting', :plugin => 'git_lab_hooks' %>
+<% end %>
+
 <h2>Polls</h2>
 
 <% @polls.each do |poll| %>
