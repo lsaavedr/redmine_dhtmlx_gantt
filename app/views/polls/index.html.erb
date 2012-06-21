@@ -9,8 +9,17 @@
 <% @polls.each do |poll| %>
   <p>
   <%= poll.question %>?
-  <%= link_to 'Yes', { :action => 'vote', :id => poll[:id], :answer => 'yes' }, :method => :post %> (<%= poll.yes %>) /
+  <%= link_to 'Yes', { :action => 'vote', :id => poll[:id], :answer => 'yes' }, :method => :post %> (<%= poll.yes %>, <%= params[:project_id] %>) /
   <%= link_to 'No', { :action => 'vote', :id => poll[:id], :answer => 'no' }, :method => :post %> (<%= poll.no %>)
+  </p>
+<% end %>
+
+Issues[:]<%= @issues %>[:]
+
+<% @issues.each do |issue| %>
+  <p>
+  project_id: <%= issue.project_id %> /
+  due_date: <%= issue.due_date %> /
   </p>
 <% end %>
 
