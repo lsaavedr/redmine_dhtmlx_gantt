@@ -1,5 +1,7 @@
 <% content_for :header_tags do %>
-    <%= stylesheet_link_tag 'voting', :plugin => 'git_lab_hooks' %>
+    <%= javascript_include_tag 'dhtmlxcalendar', :plugin => 'git_lab_hooks' %>
+    <%= stylesheet_link_tag 'dhtmlxcalendar', :plugin => 'git_lab_hooks' %>
+    <%= stylesheet_link_tag 'dhtmlxcalendar_dhx_skyblue', :plugin => 'git_lab_hooks' %>
 <% end %>
 
 <h2>GitLab</h2>
@@ -11,3 +13,24 @@
   <%= link_to 'No', { :action => 'vote', :id => poll[:id], :answer => 'no' }, :method => :post %> (<%= poll.no %>)
   </p>
 <% end %>
+
+<table border="1">
+        <tr>
+            <td class="td">
+            <%= tag "input", { "type" => "button", "value" => "Show here", "onclick" => "myCalendar.setParent('calendarHere1');" } %>
+            </td>
+            <td class="td">
+            <%= tag "input", { "type" => "button", "value" => "Show here", "onclick" => "myCalendar.setParent('calendarHere2');" } %>
+            </td>
+        </tr>
+        <tr>
+            <td class="td"><div id="calendarHere1" style="position:relative;height:250px;"></div></td>
+            <td class="td"><div id="calendarHere2" style="position:relative;height:250px;"></div></td>
+        </tr>
+</table>
+<%= javascript_tag "var myCalendar;
+function doOnLoad() {
+    myCalendar = new dhtmlXCalendarObject('calendarHere1');
+    myCalendar.show();
+}
+doOnLoad();" %>
