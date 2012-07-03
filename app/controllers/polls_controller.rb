@@ -29,6 +29,5 @@ class PollsController < ApplicationController
     retrieve_query
     @query.group_by = nil
     @issues = @query.issues()
-    @waa = 'calendarHere2'
    end
 end
