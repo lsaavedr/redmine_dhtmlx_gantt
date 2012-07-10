@@ -1,3 +1,5 @@
 # English strings go here for Rails i18n
 en:
-  my_label: "My label"
+  permission_view_dhtmlxgantt: "View dhtmlxGantt Chart"
+  project_module_dhtmlxgantt: "dhtmlxGantt"
+  dhtmlxgantt: "dhtmlxGantt"

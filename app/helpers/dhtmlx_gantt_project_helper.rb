@@ -1,0 +1,2 @@
+module DhtmlxGanttProjectHelper
+end
