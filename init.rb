@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+require 'redmine'
 Redmine::Plugin.register :redmine_dhtmlx_gantt do
   name 'Redmine dhtmlxGantt plugin'
   author 'Luis Saavedra'
@@ -23,9 +24,10 @@ Redmine::Plugin.register :redmine_dhtmlx_gantt do
   version '0.0.2'
   url 'https://github.com/lsaavedr/redmine_dhtmlx_gantt'
   author_url 'https://github.com/lsaavedr'
+  requires_redmine :version_or_higher => '2.0.3'
 
   project_module :dhtmlxgantt do
     permission :view_dhtmlxgantt, :dhtmlx_gantt_project => :index
   end
-  menu :project_menu, :dhtmlxgantt, { :controller => :dhtmlx_gantt_project, :action => :index }, :caption => :dhtmlxgantt, :after => :new_issue, :param => :project_id
+  menu :project_menu, :dhtmlxgantt, { :controller => :dhtmlx_gantt_project, :action => :index }, :caption => :dhtmlxgantt, :after => :new_issue
 end

@@ -28,6 +28,28 @@ class DhtmlxGanttProjectController < ApplicationController
   private
 
   def find_project
-    @project = Project.find(params[:project_id])
+    if params[:id]
+      @project = Project.find(params[:id])
+      projects = return_ids(@project.id)
+
+      @issues = Issue.find_by_sql("select * from issues where project_id in (#{projects})")
+    end
+  end
+
+  # return subprojects ID
+  def subProjects(proj_id)
+    Project.find_by_sql("select * from projects where parent_id = #{proj_id.to_i}")
+  end
+
+  # return an array with the project and subprojects IDs
+  def return_ids(proj_id)
+    array = Array.new
+    array.push(proj_id)
+    subprojects = subProjects(proj_id)
+    subprojects.each do |proj|
+      array.push(return_ids(proj.id))
+    end
+
+    return array.inspect.gsub("[","").gsub("]","").gsub("\\","").gsub("\"","")
   end
 end

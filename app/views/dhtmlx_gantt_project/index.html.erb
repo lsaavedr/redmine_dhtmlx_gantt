@@ -2,6 +2,6 @@
 
 <h2>dhtmlxGantt</h2>
 
-<% @milista.each do |wa| %>
- <p>wa:<%= wa %></p>
+<% @issues.each do |issue| %>
+ <p>subject:<%= issue.subject %> project_id:<%= issue.project_id %></p>
 <% end %>
