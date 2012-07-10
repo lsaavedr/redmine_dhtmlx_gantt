@@ -1,3 +1,3 @@
 = Redmine dhtmlxGantt plugin
 
-This is s plugin for dhtmlxGantt[http://dhtmlx.com/docs/products/dhtmlxGantt/index.shtml]
+Redmine dhtmlxGantt[http://dhtmlx.com/docs/products/dhtmlxGantt/index.shtml] plugin
