@@ -1,6 +1,9 @@
 <% html_title "dhtmlxGantt" %>
 
 <% content_for :header_tags do %>
+  <%= include_gon(:namespace => 'dhtmlxGantt') %>
+  <%= javascript_include_tag 'jquery.min.js', :plugin => :redmine_dhtmlx_gantt %>
+  <%= javascript_include_tag 'colResizable.min.js', :plugin => :redmine_dhtmlx_gantt %>
   <%= javascript_include_tag 'dhtmlxcommon', :plugin => :redmine_dhtmlx_gantt %>
   <%= javascript_include_tag 'dhtmlxgantt', :plugin => :redmine_dhtmlx_gantt %>
   <%= stylesheet_link_tag 'dhtmlxgantt', :plugin => :redmine_dhtmlx_gantt %>
@@ -9,12 +12,10 @@
 
 <h2>dhtmlxGantt</h2>
 
-<div style="width:95%; height:610px; position:relative; align:center;" id="dhtmlxGantt"></div>
+<div style="width:100%; height:610px; position:relative; align:center;" id="dhtmlxGantt"></div>
 
 <script type="text/javascript" language="JavaScript">
 /*<![CDATA[*/
-function createChartControl(htmlDiv)
-{
   // Create Gantt control
   var ganttChartControl = new GanttChart();
 
@@ -101,9 +102,28 @@ function createChartControl(htmlDiv)
   ganttChartControl.addProject(project<%= @project.id %>);
 
   // Build control on the page
-  ganttChartControl.create(htmlDiv);
-};
+  ganttChartControl.create('dhtmlxGantt');
 
-createChartControl('dhtmlxGantt');
+  $(function(){
+    var onSampleResized = function(e) {
+      var w1 = $("#treePanel").width();
+      $("#panelNames").width(w1);
+      $("#divListNames").width(w1);
+
+      var w2 = $("#timeTasks").width();
+      $("#panelTime").width(w2);
+      $("#oData").width(w2);
+    };
+
+    var wpn = ganttChartControl.maxWidthPanelNames;
+    $("#divListNames").width(wpn);
+    $("#panelNames").width(wpn);
+    $("#treePanel").width(wpn);
+    $("#tableControl").colResizable({
+      liveDrag:true,
+      onResize:onSampleResized,
+      onDrag:onSampleResized
+    });
+  });
 /*]]>*/
 </script>

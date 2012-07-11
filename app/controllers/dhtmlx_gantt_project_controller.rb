@@ -22,7 +22,7 @@ class DhtmlxGanttProjectController < ApplicationController
   before_filter :find_project, :authorize, :only => :index
 
   def index
-    @milista = [7,8,9,0]
+    gon.rabl "../plugins/redmine_dhtmlx_gantt/app/views/dhtmlx_gantt_project/index.json.rabl"
   end
 
   private
@@ -30,9 +30,10 @@ class DhtmlxGanttProjectController < ApplicationController
   def find_project
     if params[:id]
       @project = Project.find(params[:id])
-      projects = return_ids(@project.id)
+      projects_ids = return_ids(@project.id)
 
-      @issues = Issue.find_by_sql("select * from issues where project_id in (#{projects})")
+      @projects = Project.find_by_sql("select * from projects where id in (#{projects_ids})")
+      @issues = Issue.find_by_sql("select * from issues where project_id in (#{projects_ids})")
     end
   end
 
