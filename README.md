@@ -30,3 +30,8 @@ bundle install --without development test postgresql sqlite
 - Enable the dhtmlxGantt module
 
 You should have a new 'dhtmlxGantt' project menu.
+
+Known issues
+------------
+
+- The timeline is always starting from December 1969
