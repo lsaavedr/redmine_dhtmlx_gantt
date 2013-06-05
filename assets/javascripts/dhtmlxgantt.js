@@ -1,1 +1,1 @@
-../../../../dhtmlxGantt/dhtmlxGantt/sources/dhtmlxgantt.js
+../../vendor/dhtmlxGantt/codebase/dhtmlxgantt.js

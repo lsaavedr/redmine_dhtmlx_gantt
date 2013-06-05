@@ -22,7 +22,7 @@ class DhtmlxGanttProjectController < ApplicationController
   before_filter :find_project, :authorize, :only => :index
 
   def index
-    gon.rabl "../plugins/redmine_dhtmlx_gantt/app/views/dhtmlx_gantt_project/index.json.rabl"
+    gon.rabl "plugins/redmine_dhtmlx_gantt/app/views/dhtmlx_gantt_project/index.json.rabl"
   end
 
   private
