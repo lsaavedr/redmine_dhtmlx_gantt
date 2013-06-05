@@ -1,13 +1,13 @@
 <% html_title "dhtmlxGantt" %>
 
 <% content_for :header_tags do %>
-  <%= include_gon(:namespace => 'dhtmlxGantt') %>
-  <%= javascript_include_tag 'jquery.min.js', :plugin => :redmine_dhtmlx_gantt %>
-  <%= javascript_include_tag 'colResizable.min.js', :plugin => :redmine_dhtmlx_gantt %>
-  <%= javascript_include_tag 'dhtmlxcommon', :plugin => :redmine_dhtmlx_gantt %>
-  <%= javascript_include_tag 'dhtmlxgantt', :plugin => :redmine_dhtmlx_gantt %>
-  <%= stylesheet_link_tag 'dhtmlxgantt', :plugin => :redmine_dhtmlx_gantt %>
-  <%= csrf_meta_tag %>  
+	<%= include_gon(:namespace => 'dhtmlxGantt') %>
+	<%= javascript_include_tag 'jquery.min.js', :plugin => :redmine_dhtmlx_gantt %>
+	<%= javascript_include_tag 'colResizable.min.js', :plugin => :redmine_dhtmlx_gantt %>
+	<%= javascript_include_tag 'dhtmlxcommon', :plugin => :redmine_dhtmlx_gantt %>
+	<%= javascript_include_tag 'dhtmlxgantt', :plugin => :redmine_dhtmlx_gantt %>
+	<%= stylesheet_link_tag 'dhtmlxgantt', :plugin => :redmine_dhtmlx_gantt %>
+	<%= csrf_meta_tag %>	
 <% end %>
 
 <h2>dhtmlxGantt</h2>
@@ -16,114 +16,115 @@
 
 <script type="text/javascript" language="JavaScript">
 /*<![CDATA[*/
-  // Create Gantt control
-  var ganttChartControl = new GanttChart();
+	// Create Gantt control
+	var ganttChartControl = new GanttChart();
 
-  // Setup paths and behavior
-  ganttChartControl.setStylePath("/plugin_assets/redmine_dhtmlx_gantt/stylesheets")
-  ganttChartControl.setImagePath("/plugin_assets/redmine_dhtmlx_gantt/images/");
-  ganttChartControl.setEditable(true);
-  ganttChartControl.showTreePanel(true);
-  ganttChartControl.showContextMenu(true);
-  ganttChartControl.showDescProject(true,'n,d');
-  ganttChartControl.showDescTask(true,'n,s-f');
-  var hoursDayfactor = 60 * 60 * 1000 * (24/ganttChartControl.hoursInDay);
+	// Setup paths and behavior
+	ganttChartControl.setStylePath("/plugin_assets/redmine_dhtmlx_gantt/stylesheets")
+	ganttChartControl.setImagePath("/plugin_assets/redmine_dhtmlx_gantt/images/");
+	ganttChartControl.setEditable(true);
+	ganttChartControl.showTreePanel(true);
+	ganttChartControl.showContextMenu(true);
+	ganttChartControl.showDescProject(true,'n,d');
+	ganttChartControl.showDescTask(true,'n,s-f');
+	var hoursDayfactor = 60 * 60 * 1000 * (24/ganttChartControl.hoursInDay);
 
-  // Initialize Gantt data structures:
-  // * project:
-  var project<%= @project.id %> = new GanttProjectInfo(<%= @project.id %>, '<%= @project.name %>', null);
-  // * parent issues
-  <% @issues.each do |issue| %>
-    <% if !issue.parent_id? %>
-      var precededBy = "";
-      <% issue.relations.each do |relation| %>
-        <% if relation.relation_type=="precedes" and issue.id==relation.issue_to_id %>
-          precededBy = "<%= relation.issue_from_id %>";
-        <% end %>
-      <% end %>
+	// Initialize Gantt data structures:
+	// * project:
+	var project<%= @project.id %> = new GanttProjectInfo(<%= @project.id %>, '<%= @project.name %>', new Date('<%= @project_start_date %>'));
 
-      var taskStartDate = new Date();
-      <% if issue.start_date? %>
-        var taskStartDate = new Date('<%= issue.start_date.to_date %>');
-      <% end %>
-      taskStartDate.setHours(24);
+	// * parent issues
+	<% @issues.each do |issue| %>
+		<% if !issue.parent_id? %>
+			var precededBy = "";
+			<% issue.relations.each do |relation| %>
+				<% if relation.relation_type=="precedes" and issue.id==relation.issue_to_id %>
+					precededBy = "<%= relation.issue_from_id %>";
+				<% end %>
+			<% end %>
 
-      <% if issue.due_date? %>
-        var taskDueDate = new Date('<%= issue.due_date.to_date %>');
-        taskDueDate.setHours(48);
-      <% end %>
+			var taskStartDate = new Date();
+			<% if issue.start_date? %>
+				var taskStartDate = new Date('<%= issue.start_date.to_date %>');
+			<% end %>
+			//taskStartDate.setHours(24);
 
-      var taskName = '<%= issue.tracker %> #<%= issue.id %>: <%= issue.subject %>';
-      var parentTask<%= issue.id %> = new GanttTaskInfo(
-        <%= issue.id %>, taskName, taskStartDate,
-        <% if issue.estimated_hours? %> <%= issue.estimated_hours %>
-        <% elsif issue.due_date? %> (taskDueDate - taskStartDate) / hoursDayfactor
-        <% else %> 0
-        <% end %>,
-        <%= issue.done_ratio %>, precededBy);
+			<% if issue.due_date? %>
+				var taskDueDate = new Date('<%= issue.due_date.to_date %>');
+				//taskDueDate.setHours(48);
+			<% end %>
 
-      project<%= @project.id %>.addTask(parentTask<%= issue.id %>);
-    <% end %>
-  <% end %>
-  // * child issues
-  <% @issues.each do |issue| %>
-    <% if issue.parent_id? %>
-      var precededBy = "";
-      <% issue.relations.each do |relation| %>
-        <% if relation.relation_type=="precedes" and issue.id==relation.issue_to_id %>
-          precededBy = "<%= relation.issue_from_id %>";
-        <% end %>
-      <% end %>
+			var taskName = '<%= issue.tracker %> #<%= issue.id %>: <%= issue.subject %>';
+			var parentTask<%= issue.id %> = new GanttTaskInfo(
+				<%= issue.id %>, taskName, taskStartDate,
+				<% if issue.estimated_hours? %> <%= issue.estimated_hours %>
+				<% elsif issue.due_date? %> (taskDueDate - taskStartDate) / hoursDayfactor
+				<% else %> 0
+				<% end %>,
+				<%= issue.done_ratio %>, precededBy);
 
-      var taskStartDate = new Date();
-      <% if issue.start_date? %>
-        var taskStartDate = new Date('<%= issue.start_date.to_date %>');
-      <% end %>
-      taskStartDate.setHours(24);
+			project<%= @project.id %>.addTask(parentTask<%= issue.id %>);
+		<% end %>
+	<% end %>	
+	// * child issues
+	<% @issues.each do |issue| %>
+		<% if issue.parent_id? %>
+			var precededBy = "";
+			<% issue.relations.each do |relation| %>
+				<% if relation.relation_type=="precedes" and issue.id==relation.issue_to_id %>
+					precededBy = "<%= relation.issue_from_id %>";
+				<% end %>
+			<% end %>
 
-      <% if issue.due_date? %>
-        var taskDueDate = new Date('<%= issue.due_date.to_date %>')
-        taskDueDate.setHours(48);
-      <% end %>
+			var taskStartDate = new Date();
+			<% if issue.start_date? %>
+				var taskStartDate = new Date('<%= issue.start_date.to_date %>');
+			<% end %>
+			//taskStartDate.setHours(24);
 
-      var taskName = '<%= issue.tracker %> #<%= issue.id %>: <%= issue.subject %>';
+			<% if issue.due_date? %>
+				var taskDueDate = new Date('<%= issue.due_date.to_date %>')
+				//taskDueDate.setHours(48);
+			<% end %>
 
-      parentTask<%= issue.parent_id %>.addChildTask(new GanttTaskInfo(
-        <%= issue.id %>, taskName, taskStartDate,
-        <% if issue.estimated_hours? %> <%= issue.estimated_hours %>
-        <% elsif issue.due_date? %> (taskDueDate - taskStartDate) / hoursDayfactor
-        <% else %> 0
-        <% end %>,
-        <%= issue.done_ratio %>, precededBy));
-    <% end %>
-  <% end %>
+			var taskName = '<%= issue.tracker %> #<%= issue.id %>: <%= issue.subject %>';
 
-  // Load data structure
-  ganttChartControl.addProject(project<%= @project.id %>);
+			parentTask<%= issue.parent_id %>.addChildTask(new GanttTaskInfo(
+				<%= issue.id %>, taskName, taskStartDate,
+				<% if issue.estimated_hours? %> <%= issue.estimated_hours %>
+				<% elsif issue.due_date? %> (taskDueDate - taskStartDate) / hoursDayfactor
+				<% else %> 0
+				<% end %>,
+				<%= issue.done_ratio %>, precededBy));
+		<% end %>
+	<% end %>
 
-  // Build control on the page
-  ganttChartControl.create('dhtmlxGantt');
+	// Load data structure
+	ganttChartControl.addProject(project<%= @project.id %>);
 
-  $(function(){
-    var onSampleResized = function(e) {
-      var w1 = $("#treePanel").width();
-      $("#panelNames").width(w1);
-      $("#divListNames").width(w1);
+	// Build control on the page
+	ganttChartControl.create('dhtmlxGantt');
 
-      var w2 = $("#timeTasks").width();
-      $("#panelTime").width(w2);
-      $("#oData").width(w2);
-    };
+	$(function(){
+		var onSampleResized = function(e) {
+			var w1 = $("#treePanel").width();
+			$("#panelNames").width(w1);
+			$("#divListNames").width(w1);
 
-    var wpn = ganttChartControl.maxWidthPanelNames;
-    $("#divListNames").width(wpn);
-    $("#panelNames").width(wpn);
-    $("#treePanel").width(wpn);
-    $("#tableControl").colResizable({
-      liveDrag:true,
-      onResize:onSampleResized,
-      onDrag:onSampleResized
-    });
-  });
+			var w2 = $("#timeTasks").width();
+			$("#panelTime").width(w2);
+			$("#oData").width(w2);
+		};
+
+		var wpn = ganttChartControl.maxWidthPanelNames;
+		$("#divListNames").width(wpn);
+		$("#panelNames").width(wpn);
+		$("#treePanel").width(wpn);
+		$("#tableControl").colResizable({
+			liveDrag:true,
+			onResize:onSampleResized,
+			onDrag:onSampleResized
+		});
+	});
 /*]]>*/
 </script>
