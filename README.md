@@ -24,7 +24,7 @@ bundle install --without development test postgresql sqlite
 - Restart your Redmine instance
 - Go to 'Redmine > Administration > Roles permissions' to set new permissions.
 
-![](https://github.com/loispuig/redmine_dhtmlx_gantt/raw/master/doc/roles.png)
+![](https://github.com/loispuig/redmine_dhtmlx_gantt/raw/master/doc/permissions.png)
 
 - Go to 'Project settings > Modules'
 - Enable the dhtmlxGantt module
