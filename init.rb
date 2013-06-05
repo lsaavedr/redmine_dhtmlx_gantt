@@ -21,7 +21,7 @@ Redmine::Plugin.register :redmine_dhtmlx_gantt do
   name 'Redmine dhtmlxGantt plugin'
   author 'Luis Saavedra'
   description 'This is a dhtmlxGantt plugin for Redmine'
-  version '0.0.2'
+  version '0.0.3'
   url 'https://github.com/lsaavedr/redmine_dhtmlx_gantt'
   author_url 'https://github.com/lsaavedr'
   requires_redmine :version_or_higher => '2.0.3'
